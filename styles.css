@@ -1,0 +1,29 @@
+#main {
+    height: 98vh;
+}
+
+#userDetails {
+    display: none;
+}
+
+#profileImage {
+    height: 14rem;
+    width: 14rem;
+}
+
+#outer {
+    height: 14rem;
+    width: 14rem;
+}
+
+#desc {
+    font-size: 13px;
+}
+
+#loader {
+    display: none;
+}
+
+#loader.show {
+    display: block;
+}
