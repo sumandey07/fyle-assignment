@@ -2,6 +2,10 @@
     height: 98vh;
 }
 
+#topic {
+    background-color: #0096FF;
+}
+
 #userDetails {
     display: none;
 }
@@ -16,8 +20,12 @@
     width: 14rem;
 }
 
-#desc {
+#topic {
     font-size: 13px;
+}
+
+.form-control#username:focus {
+    box-shadow: none !important;
 }
 
 #loader {
@@ -25,5 +33,13 @@
 }
 
 #loader.show {
+    display: block;
+}
+
+#errorHandler {
+    display: none;
+}
+
+#errorHandler.show {
     display: block;
 }

@@ -17,67 +17,65 @@
     <div id="main" class="m-1 border border-dark border-2">
         <form method="GET" id="form" class="row m-2 justify-content-center align-items-center gap-3">
             <div class="col-8">
-                <input required type="text" class="form-control border-2 border" id="username"
+                <input required type="text" class="focus-ring form-control border-2 border" id="username"
                     placeholder="Enter a Github Username">
             </div>
-            <button type="submit" class="col btn btn-success btn-success-hover col-1">Find</button>
+            <button id="submitBtn" type="submit" class="col btn btn-success btn-success-hover col-1">Find</button>
         </form>
         <hr />
-        <div class="container" id="userDetails">
+        <div class="px-5 py-2" id="userDetails">
             <div id="loader" class="position-absolute top-50 start-50 translate-middle">
                 <div class="spinner-border" role="status"></div>
             </div>
-            <div class="row justify-content-around my-4 align-items-center">
-                <img id="profileImage" src="/user.jpg" class="col-3 ms-4 border border-2 p-1 rounded-circle" alt="...">
-                <div class="col-1"></div>
-                <div class="col-8 d-flex flex-column gap-3">
-                    <span id="name" class="fw-bold fs-2"></span>
-                    <span id="bio"></span>
-                    <span class="d-flex flex-row gap-2 align-items-center">
-                        <i class="fa-solid fa-location-dot"></i>
-                        <span id="location" class=""></span>
-                    </span>
-                    <div id="social" class="d-flex flex-row">
-                        <span>Twitter : https://twitter.com/</span>
-                        <span id="twitterLink"></span>
+            <div id="errorHandler" class="position-absolute top-50 start-50 translate-middle">Your search did not match
+                any users</div>
+            <div id="mainContainer">
+                <div class="row justify-content-around my-4 align-items-center">
+                    <img id="profileImage" src="/user.jpg" class="col-3 ms-4 border border-2 p-1 rounded-circle"
+                        alt="...">
+                    <div class="col-1"></div>
+                    <div class="col-8 d-flex flex-column gap-3">
+                        <span id="name" class="fw-bold fs-2"></span>
+                        <span id="bio"></span>
+                        <span class="d-flex flex-row gap-2 align-items-center">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <span id="location" class=""></span>
+                        </span>
+                        <div id="social" class="d-flex flex-row">
+                            <span>Twitter : </span>
+                            <a class="text-decoration-none ms-2" id="twitterLink"></a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <span class="flex-row d-flex gap-2 mt-5 mb-4 ms-4 align-items-center">
-                <i class="fa-solid fa-link"></i>
-                <span id="profileLink"></span>
-            </span>
-            <div class="my-5 mx-3 d-flex flex-row justify-content-between">
-                <div class="d-flex flex-row align-items-center">
-                    <span>Show</span>
-                    <select class="mx-2">
-                        <option value="10">10</option>
-                        <option value="25">25</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
-                    </select>
-                    <span>repositories</span>
+                <span class="flex-row d-flex gap-2 mt-5 mb-4 ms-4 align-items-center">
+                    <i class="fa-solid fa-link"></i>
+                    <a class="text-decoration-none" id="profileLink"></a>
+                </span>
+                <div class="my-5 mx-3 d-flex flex-row justify-content-between">
+                    <div class="d-flex flex-row align-items-center">
+                        <span>Show</span>
+                        <select id="perPageCounters" class="mx-2" onchange="perPageCounter()">
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                        <span>repositories</span>
+                    </div>
+                    <div class="d-flex flex-row align-items-center">
+                        <label for="searchRepos">Search: </label>
+                        <input type="text" onkeyup="searchFunc()" class="ms-2" id="searchRepos" placeholder="Search" />
+                    </div>
                 </div>
-                <div class="d-flex flex-row align-items-center">
-                    <label for="searchRepos">Search: </label>
-                    <input type="text" onkeyup="searchFunc()" class="ms-2" id="searchRepos" placeholder="Search" />
-                </div>
-            </div>
-            <div id="reposList" class="my-5 row justify-content-around"></div>
-            <div class="sticky align-items-center">
+                <div id="reposList" class="my-5 row justify-content-around"></div>
                 <nav aria-label="Page navigation example">
-                    <span class="">Showing 1 to 10 out of 50 repositories</span>
                     <ul class="pagination justify-content-center">
                         <li class="page-item">
                             <a class="page-link" href="#" aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
                         </li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">4</a></li>
-                        <li class="page-item"><a class="page-link" href="#">5</a></li>
+                        <li class="page-item"><a class="page-link" href="#"></a></li>
                         <li class="page-item">
                             <a class="page-link" href="#" aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
