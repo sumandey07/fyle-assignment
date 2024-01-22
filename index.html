@@ -69,21 +69,19 @@
                 </div>
                 <div id="reposList" class="my-5 row justify-content-around">
                 </div>
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-center">
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <li class="page-item"><a class="page-link" href="#"></a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+                <ul class="pagination Page navigation example justify-content-center">
+                    <li class="page-item">
+                        <button class="page-link" onclick="paginate()" id="prevPage" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </button>
+                    </li>
+                    <li id="paginationCont" class="page-item"></li>
+                    <li class="page-item">
+                        <button class="page-link" id="nextPage" onclick="paginate()" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </button>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>

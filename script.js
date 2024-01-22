@@ -1,3 +1,14 @@
+let baseUrl = "https://api.github.com/users";
+let username = document.getElementById("username");
+let searchRepos, newJson, filter, reposList, i, txtValue, texts, list, repoNum;
+let loader = document.getElementById("loader");
+let form = document.getElementById("form");
+let errorHandler = document.getElementById("errorHandler");
+let perPageCounters = document.getElementById("perPageCounters");
+// let paginateContainer = document.getElementById("")
+let currentPage = 1,
+  perPage = 10;
+
 if (typeof process === "undefined") {
   Object.defineProperty(this, "process", {
     value: {
@@ -5,71 +16,6 @@ if (typeof process === "undefined") {
     },
     writable: true,
   });
-}
-
-let username = document.getElementById("username");
-let searchRepos, newJson, filter, reposList, i, txtValue, texts, list, newLink;
-let loader = document.getElementById("loader");
-let form = document.getElementById("form");
-let errorHandler = document.getElementById("errorHandler");
-let perPageCounters = document.getElementById("perPageCounters");
-let currentPage = 1,
-  perPage = 10;
-
-function repoLoad(usernames) {
-  showLoader();
-  fetch(
-    `https://api.github.com/users/${usernames.value}/repos?page=1&per_page=${perPage}`,
-    {
-      method: "GET",
-      headers: {
-        Authorization: process.env.ACCESS_TOKEN, //access token for using github api with specific scopes
-      },
-    }
-  ).then((resp) => {
-    newLink = parseLink(resp.headers.get("link"));
-    console.log(newLink);
-    resp.json().then((val) => {
-      hideLoader();
-      Object.keys(val).forEach((key) => {
-        let details2 = "",
-          details3 = `<div id="topics" class="d-flex overflow-x-hidden flex-row mx-1 gap-2 mt-4"></div>`;
-
-        const details1 = `<div id="name" class="fs-3 fw-bold">${val[key].name}</div>`;
-
-        // paginate(val, perPage);
-
-        if (val[key].description !== null) {
-          details2 = `<div id="desc" class="mt-4">
-                  ${val[key].description}
-                </div>`;
-        } else {
-          details2 = `<div id="desc" class="mt-4 fs-5"></div>`;
-        }
-        newJson = JSON.stringify(val[key].topics);
-        newJson = JSON.parse(newJson);
-
-        // if (newJson.length === 0) {
-        //   details3 = `<div id="topic" class="align-items-center fw-semibold text-white p-1 rounded-1"></div>`;
-        //   document
-        //     .getElementById("topics")
-        //     .insertAdjacentText("beforeend", details3);
-        // } else {
-        //   details3 = `<div id="topic" class="align-items-center fw-semibold text-white p-1 rounded-1">${newJson}</div>`;
-        //   document
-        //     .getElementById("topics")
-        //     .insertAdjacentHTML("beforeend", details3);
-        // }
-
-        const details = `<div id="repoContainer" class="bg-light bg-gradient col-5 rounded-1 border border-2 p-3 my-4 border-dark d-flex flex-column">${details1} ${details2} ${details3}</div>`;
-
-        document
-          .getElementById("reposList")
-          .insertAdjacentHTML("beforeend", details);
-      });
-    });
-  });
-  document.getElementById("reposList").innerHTML = "";
 }
 
 function parseLink(s) {
@@ -83,6 +29,112 @@ function parseLink(s) {
   }
 
   return output;
+}
+
+function paginate(repoNum, items, perPage) {
+  if (newLink["prev"] === undefined) {
+    document.getElementById("prevPage").disabled = true;
+  }
+  const totalPages = Math.ceil(repoNum / perPage);
+  function showItems(page) {
+    currentPage = page;
+    repoLoad(username);
+  }
+  function setupPagination() {
+    const pagination = document.querySelector("#paginationCont");
+    if (newLink["next"] === undefined) {
+      document.getElementById("nextPage").disabled = true;
+    } else {
+      // pagination.innerHTML = "";
+      for (let i = 1; i <= totalPages; i++) {
+        const link = document.createElement("a");
+        link.href = newLink["next"];
+        console.log(link.href);
+        link.innerText = i;
+        if (i === currentPage) {
+          link.classList.add("active");
+        }
+        link.addEventListener("click", (event) => {
+          event.preventDefault();
+          currentPage = i;
+          showItems(currentPage);
+          const currentActive = pagination.querySelector(".active");
+          currentActive.classList.remove("active");
+          link.classList.add("active");
+        });
+        pagination.appendChild(link);
+      }
+    }
+  }
+  showItems(currentPage);
+  setupPagination();
+}
+
+function repoLoad(usernames) {
+  showLoader();
+  fetch(`${baseUrl}/${usernames.value}`, {
+    method: "GET",
+    headers: {
+      Authorization: process.env.ACCESS_TOKEN,
+    },
+  }).then(async (res) => {
+    return res.json().then((value) => {
+      repoNum = value.public_repos;
+    });
+  });
+
+  fetch(
+    `${baseUrl}/${usernames.value}/repos?page=${currentPage}&per_page=${perPage}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: process.env.ACCESS_TOKEN,
+      },
+    }
+  ).then((resp) => {
+    resp.json().then((val) => {
+      newLink = parseLink(resp.headers.get("link"));
+      hideLoader();
+      paginate(repoNum, val);
+
+      Object.keys(val).forEach((key) => {
+        let details2 = "",
+          details3 = `<div id="topics" class="d-flex overflow-x-hidden flex-row mx-1 gap-2 mt-4"></div>`;
+
+        const details1 = `<div id="name" class="fs-3 fw-bold">${val[key].name}</div>`;
+
+        if (val[key].description !== null) {
+          details2 = `<div id="desc" class="mt-4">
+                  ${val[key].description}
+                </div>`;
+        } else {
+          details2 = `<div id="desc" class="mt-4 fs-5"></div>`;
+        }
+
+        newJson = Object.values(val[key].topics);
+
+        if (newJson.length !== 0) {
+          let j = 0;
+          while (j < 4) {
+            details3 = `<div id="topic" class="align-items-center mt-4 fw-semibold text-white p-1 rounded-1">${
+              newJson[Object.keys(newJson)[j]]
+            }</div>`;
+            document
+              .getElementById("topics")
+              .insertAdjacentHTML("beforeend", details3);
+            j++;
+          }
+        }
+
+        const details = `<div id="repoContainer" class="bg-light bg-gradient col-5 rounded-1 border border-2 p-3 my-4 border-dark d-flex flex-column">${details1} ${details2} ${details3}</div>`;
+
+        document
+          .getElementById("reposList")
+          .insertAdjacentHTML("beforeend", details);
+      });
+    });
+  });
+  document.getElementById("reposList").innerHTML = "";
 }
 
 window.onload = function () {
@@ -128,53 +180,14 @@ function perPageCounter() {
   repoLoad(username);
 }
 
-function paginate(items, itemsPerPage, paginationContainer) {
-  // const totalPages = Math.ceil(items.length / itemsPerPage);
-  // function showItems(page) {
-  //   const startIndex = (page - 1) * itemsPerPage;
-  //   const endIndex = startIndex + itemsPerPage;
-  //   const pageItems = items.slice(startIndex, endIndex);
-  //   const itemsContainer = document.querySelector("#items");
-  //   itemsContainer.innerHTML = "";
-  //   pageItems.forEach((item) => {
-  //     const li = document.createElement("li");
-  //     li.innerText = item;
-  //     itemsContainer.appendChild(li);
-  //   });
-  // }
-  // function setupPagination() {
-  //   const pagination = document.querySelector(paginationContainer);
-  //   pagination.innerHTML = "";
-  //   for (let i = 1; i <= totalPages; i++) {
-  //     const link = document.createElement("a");
-  //     link.href = "#";
-  //     link.innerText = i;
-  //     if (i === currentPage) {
-  //       link.classList.add("active");
-  //     }
-  //     link.addEventListener("click", (event) => {
-  //       event.preventDefault();
-  //       currentPage = i;
-  //       showItems(currentPage);
-  //       const currentActive = pagination.querySelector(".active");
-  //       currentActive.classList.remove("active");
-  //       link.classList.add("active");
-  //     });
-  //     pagination.appendChild(link);
-  //   }
-  // }
-  // showItems(currentPage);
-  // setupPagination();
-}
-
 form.addEventListener("submit", function (e) {
   e.preventDefault();
-  const userUrl = `https://api.github.com/users/${username.value}`;
+  const userUrl = `${baseUrl}/${username.value}`;
   showLoader();
   fetch(userUrl, {
     method: "GET",
     headers: {
-      Authorization: process.env.ACCESS_TOKEN, //access token for using github api with specific scopes
+      Authorization: process.env.ACCESS_TOKEN,
     },
   }).then((res) => {
     if (res.status !== 404) {

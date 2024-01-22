@@ -4,6 +4,7 @@
 
 #topic {
     background-color: #0096FF;
+    font-size: 13px;
 }
 
 #userDetails {
@@ -18,10 +19,6 @@
 #outer {
     height: 14rem;
     width: 14rem;
-}
-
-#topic {
-    font-size: 13px;
 }
 
 .form-control#username:focus {
