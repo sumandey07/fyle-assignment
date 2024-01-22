@@ -1,3 +1,12 @@
+if (typeof process === "undefined") {
+  Object.defineProperty(this, "process", {
+    value: {
+      env: {},
+    },
+    writable: true,
+  });
+}
+
 let username = document.getElementById("username");
 let searchRepos, newJson, filter, reposList, i, txtValue, texts, list, newLink;
 let loader = document.getElementById("loader");
@@ -14,13 +23,14 @@ function repoLoad(usernames) {
     {
       method: "GET",
       headers: {
-        Authorization:
-          "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", //access token for using github api with specific scopes
+        Authorization: process.env.ACCESS_TOKEN, //access token for using github api with specific scopes
       },
     }
   ).then((resp) => {
     newLink = parseLink(resp.headers.get("link"));
+    console.log(newLink);
     resp.json().then((val) => {
+      hideLoader();
       Object.keys(val).forEach((key) => {
         let details2 = "",
           details3 = `<div id="topics" class="d-flex overflow-x-hidden flex-row mx-1 gap-2 mt-4"></div>`;
@@ -79,6 +89,22 @@ window.onload = function () {
   username.focus();
   searchFunc();
 };
+
+function searchFunc() {
+  searchRepos = document.getElementById("searchRepos").value.toLowerCase();
+  reposList = document.getElementById("reposList");
+  list = document.querySelectorAll("#repoContainer");
+  filter = reposList.getElementsByTagName("div");
+  for (i = 0; i < filter.length; i++) {
+    txtValue = list[i].getElementsByTagName("div")[0];
+    texts = txtValue.innerHTML || txtValue.textContent;
+    if (texts.toLowerCase().indexOf(searchRepos) > -1) {
+      list[i].style.display = "";
+    } else {
+      list[i].style.display = "none";
+    }
+  }
+}
 
 function showLoader() {
   loader.classList.add("show");
@@ -148,8 +174,7 @@ form.addEventListener("submit", function (e) {
   fetch(userUrl, {
     method: "GET",
     headers: {
-      Authorization:
-        "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", //access token for using github api with specific scopes
+      Authorization: process.env.ACCESS_TOKEN, //access token for using github api with specific scopes
     },
   }).then((res) => {
     if (res.status !== 404) {
@@ -180,19 +205,3 @@ form.addEventListener("submit", function (e) {
     }
   });
 });
-
-function searchFunc() {
-  searchRepos = document.getElementById("searchRepos").value.toLowerCase();
-  reposList = document.getElementById("reposList");
-  list = document.querySelectorAll("#repoContainer");
-  filter = reposList.getElementsByTagName("div");
-  for (i = 0; i < filter.length; i++) {
-    txtValue = list[i].getElementsByTagName("div");
-    texts = txtValue.innerHTML || txtValue.textContent;
-    if (texts.toLowerCase().indexOf(searchRepos) > -1) {
-      list[i].style.display = "";
-    } else {
-      list[i].style.display = "none";
-    }
-  }
-}
