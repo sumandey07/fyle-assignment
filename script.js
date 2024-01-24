@@ -31,44 +31,44 @@ function parseLink(s) {
   return output;
 }
 
-function paginate(repoNum, items, perPage) {
-  if (newLink["prev"] === undefined) {
-    document.getElementById("prevPage").disabled = true;
-  }
-  const totalPages = Math.ceil(repoNum / perPage);
-  function showItems(page) {
-    currentPage = page;
-    repoLoad(username);
-  }
-  function setupPagination() {
-    const pagination = document.querySelector("#paginationCont");
-    if (newLink["next"] === undefined) {
-      document.getElementById("nextPage").disabled = true;
-    } else {
-      // pagination.innerHTML = "";
-      for (let i = 1; i <= totalPages; i++) {
-        const link = document.createElement("a");
-        link.href = newLink["next"];
-        console.log(link.href);
-        link.innerText = i;
-        if (i === currentPage) {
-          link.classList.add("active");
-        }
-        link.addEventListener("click", (event) => {
-          event.preventDefault();
-          currentPage = i;
-          showItems(currentPage);
-          const currentActive = pagination.querySelector(".active");
-          currentActive.classList.remove("active");
-          link.classList.add("active");
-        });
-        pagination.appendChild(link);
-      }
-    }
-  }
-  showItems(currentPage);
-  setupPagination();
-}
+// function paginate(repoNum, items, perPage) {
+//   if (newLink["prev"] === undefined) {
+//     document.getElementById("prevPage").disabled = true;
+//   }
+//   const totalPages = Math.ceil(repoNum / perPage);
+//   function showItems(page) {
+//     currentPage = page;
+//     repoLoad(username);
+//   }
+//   function setupPagination() {
+//     const pagination = document.querySelector("#paginationCont");
+//     if (newLink["next"] === undefined) {
+//       document.getElementById("nextPage").disabled = true;
+//     } else {
+//       // pagination.innerHTML = "";
+//       for (let i = 1; i <= totalPages; i++) {
+//         const link = document.createElement("a");
+//         link.href = newLink["next"];
+//         console.log(link.href);
+//         link.innerText = i;
+//         if (i === currentPage) {
+//           link.classList.add("active");
+//         }
+//         link.addEventListener("click", (event) => {
+//           event.preventDefault();
+//           currentPage = i;
+//           showItems(currentPage);
+//           const currentActive = pagination.querySelector(".active");
+//           currentActive.classList.remove("active");
+//           link.classList.add("active");
+//         });
+//         pagination.appendChild(link);
+//       }
+//     }
+//   }
+//   showItems(currentPage);
+//   setupPagination();
+// }
 
 function repoLoad(usernames) {
   showLoader();
@@ -95,7 +95,7 @@ function repoLoad(usernames) {
     resp.json().then((val) => {
       newLink = parseLink(resp.headers.get("link"));
       hideLoader();
-      paginate(repoNum, val);
+      // paginate(repoNum, val);
 
       Object.keys(val).forEach((key) => {
         let details2 = "",
