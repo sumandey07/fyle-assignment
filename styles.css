@@ -1,5 +1,5 @@
 * {
-    font-family: "Source Code Pro", monospace, "Montserrat", sans-serif;
+    font-family: "Montserrat", sans-serif;
 }
 
 #main {
@@ -28,8 +28,7 @@
 }
 
 #username:focus {
-    border-inline-color: red;
-    border-inline-width: thin;
+    border-color: red;
     box-shadow: none !important;
 }
 
@@ -43,7 +42,7 @@
     }
 
     to {
-        width: 5em;
+        width: 358px;
     }
 }
 
@@ -63,12 +62,12 @@
 
 .list {
     font-size: 64px;
-    font-weight: 800;
+    font-weight: 700;
     top: 200px;
     white-space: nowrap;
     overflow: hidden;
-    animation: typewriter 3s steps(9) 1s 1 normal both,
-        blinkTextCursor 6s steps(7) infinite normal;
+    animation: typewriter 1.5s steps(11) 1s 1 normal both,
+        blinkTextCursor 60s steps(11) infinite normal;
 }
 
 #topic {
