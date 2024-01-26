@@ -2,8 +2,9 @@ let baseUrl = "https://api.github.com/users";
 let username = document.getElementById("username");
 let searchRepos, newJson, filter, reposList, i, txtValue, texts, list, repoNum;
 let loader = document.getElementById("loader");
+let emptyHandler = document.getElementById("error");
 let form = document.getElementById("form");
-let errorHandler = document.getElementById("errorHandler");
+let mainForm = document.getElementById("main");
 let perPageCounters = document.getElementById("perPageCounters");
 // let paginateContainer = document.getElementById("")
 let currentPage = 1,
@@ -166,15 +167,6 @@ function hideLoader() {
   loader.classList.remove("show");
 }
 
-function showError() {
-  hideLoader();
-  errorHandler.classList.add("show");
-}
-
-function hideError() {
-  errorHandler.classList.remove("show");
-}
-
 function perPageCounter() {
   perPage = perPageCounters.value;
   repoLoad(username);
@@ -182,39 +174,45 @@ function perPageCounter() {
 
 form.addEventListener("submit", function (e) {
   e.preventDefault();
-  const userUrl = `${baseUrl}/${username.value}`;
-  showLoader();
-  fetch(userUrl, {
-    method: "GET",
-    headers: {
-      Authorization: process.env.ACCESS_TOKEN,
-    },
-  }).then((res) => {
-    if (res.status !== 404) {
-      hideError();
-      res.json().then((data) => {
-        hideLoader();
-        document.getElementById("main").style.height = "max-content";
-        document.getElementById("userDetails").style.display = "block";
-        document.getElementById("title").innerHTML = `${data.name} - Github`;
-        document.getElementById("name").innerHTML = data.name;
-        document.getElementById("bio").innerHTML = data.bio;
-        document.getElementById("location").innerHTML = data.location;
-        document.getElementById("profileLink").innerHTML = data.html_url;
-        document.getElementById("profileLink").href = data.html_url;
-        document.getElementById(
-          "twitterLink"
-        ).innerHTML = `https://twitter.com/${data.twitter_username}`;
-        document.getElementById(
-          "twitterLink"
-        ).href = `https://twitter.com/${data.twitter_username}`;
-        document.getElementById("profileImage").src = data.avatar_url;
-        repoLoad(username);
-      });
-    } else {
-      document.getElementById("title").innerHTML = "User Not Found - Github";
-      document.getElementById("mainContainer").style.display = "none";
-      showError();
-    }
-  });
+  if (username.value.trim().length === 0) {
+    emptyHandler.style.display = "block";
+    emptyHandler.focus();
+    emptyHandler.innerHTML = "Please enter a username.";
+  } else {
+    mainForm.style.animation = "move 4s ease-in-out 2";
+    mainForm.style.transform = "translate(" + 0 + "px," + -750 + "px)";
+    const userUrl = `${baseUrl}/${username.value}`;
+    showLoader();
+    fetch(userUrl, {
+      method: "GET",
+      headers: {
+        Authorization: process.env.ACCESS_TOKEN,
+      },
+    }).then((res) => {
+      if (res.status !== 404) {
+        res.json().then((data) => {
+          hideLoader();
+          document.getElementById("main").style.height = "max-content";
+          document.getElementById("userDetails").style.display = "block";
+          document.getElementById("title").innerHTML = `${data.name} - Github`;
+          document.getElementById("name").innerHTML = data.name;
+          document.getElementById("bio").innerHTML = data.bio;
+          document.getElementById("location").innerHTML = data.location;
+          document.getElementById("profileLink").innerHTML = data.html_url;
+          document.getElementById("profileLink").href = data.html_url;
+          document.getElementById(
+            "twitterLink"
+          ).innerHTML = `https://twitter.com/${data.twitter_username}`;
+          document.getElementById(
+            "twitterLink"
+          ).href = `https://twitter.com/${data.twitter_username}`;
+          document.getElementById("profileImage").src = data.avatar_url;
+          repoLoad(username);
+        });
+      } else {
+        emptyHandler.style.display = "block";
+        emptyHandler.innerHTML = "User Not Found";
+      }
+    });
+  }
 });

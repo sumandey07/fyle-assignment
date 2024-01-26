@@ -1,5 +1,74 @@
+* {
+    font-family: "Source Code Pro", monospace, "Montserrat", sans-serif;
+}
+
 #main {
     height: 98vh;
+}
+
+#submitBtn {
+    height: 50px;
+    max-height: 60px;
+    width: 130px;
+    max-width: 150px;
+}
+
+#bottom {
+    text-decoration: none;
+    bottom: 12px;
+    right: 30px;
+    opacity: 0.7;
+}
+
+#username {
+    height: 50px;
+    max-height: 60px;
+    width: 600px;
+    max-width: 700px;
+}
+
+#username:focus {
+    border-inline-color: red;
+    border-inline-width: thin;
+    box-shadow: none !important;
+}
+
+#form {
+    top: 350px;
+}
+
+@keyframes typewriter {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 5em;
+    }
+}
+
+@keyframes blinkTextCursor {
+    from {
+        border-right-color: rgba(255, 255, 255, .75);
+    }
+
+    to {
+        border-right-color: transparent;
+    }
+}
+
+#error {
+    display: none;
+}
+
+.list {
+    font-size: 64px;
+    font-weight: 800;
+    top: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    animation: typewriter 3s steps(9) 1s 1 normal both,
+        blinkTextCursor 6s steps(7) infinite normal;
 }
 
 #topic {
@@ -21,22 +90,10 @@
     width: 14rem;
 }
 
-.form-control#username:focus {
-    box-shadow: none !important;
-}
-
 #loader {
     display: none;
 }
 
 #loader.show {
-    display: block;
-}
-
-#errorHandler {
-    display: none;
-}
-
-#errorHandler.show {
     display: block;
 }

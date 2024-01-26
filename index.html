@@ -14,21 +14,29 @@
 </head>
 
 <body>
-    <div id="main" class="m-1 border border-dark border-2">
-        <form method="GET" id="form" class="row m-2 justify-content-center align-items-center gap-3">
-            <div class="col-8">
-                <input required type="text" class="focus-ring form-control border-2 border" id="username"
-                    placeholder="Enter a Github Username">
-            </div>
-            <button id="submitBtn" type="submit" class="col btn btn-success btn-success-hover col-1">Find</button>
-        </form>
-        <hr />
-        <div class="px-5 py-2" id="userDetails">
+    <div class="m-1 border border-dark border-2">
+        <div id="main">
+            <h1 class="list position-absolute start-50 translate-middle">Welcome👋</h1>
+            <form method="GET" id="form"
+                class="position-absolute start-50 translate-middle row mt-5 justify-content-center">
+                <div class="flex-column d-flex mb-5">
+                    <input type="text" class="focus-ring form-control border-2 border" id="username"
+                        placeholder="Enter a GitHub Username">
+                    <small id="error" class="text-danger mt-1 mb-2"></small>
+                </div>
+                <button id="submitBtn" type="submit"
+                    class="fw-bold btn btn-primary btn-primary-hover fs-5">Find</button>
+            </form>
+            <a target="_blank" href="https://www.github.com/sumandey07/fyle-assignment"
+                class="align-items-center position-absolute" id="bottom">
+                <i class="me-1 fa-brands fa-github"></i>
+                <span>Source</span>
+            </a>
+        </div>
+        <div class="px-5 pb-3 pt-5" id="userDetails">
             <div id="loader" class="position-absolute top-50 start-50 translate-middle">
                 <div class="spinner-border" role="status"></div>
             </div>
-            <div id="errorHandler" class="position-absolute top-50 start-50 translate-middle">Your search did not match
-                any users</div>
             <div id="mainContainer">
                 <div class="row justify-content-around my-4 align-items-center">
                     <img id="profileImage" src="/user.jpg" class="col-3 ms-4 border border-2 p-1 rounded-circle"
