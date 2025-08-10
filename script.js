@@ -140,11 +140,16 @@ function repoLoad(usernames) {
 
 window.onload = function () {
   username.focus();
+<<<<<<< HEAD
 };
 
 document.addEventListener("DOMContentLoaded", () => {
   searchFunc();
 });
+=======
+  searchFunc();
+};
+>>>>>>> d4897e4cbf9047016a9a1a2f506cba9f1a9f02f7
 
 function searchFunc() {
   searchRepos = document.getElementById("searchRepos").value.toLowerCase();
@@ -152,7 +157,12 @@ function searchFunc() {
   list = document.querySelectorAll("#repoContainer");
   filter = reposList.getElementsByTagName("div");
   for (i = 0; i < filter.length; i++) {
+<<<<<<< HEAD
     texts = list[i].getElementsByTagName("div")[0].innerText;
+=======
+    txtValue = list[i].getElementsByTagName("div")[0];
+    texts = txtValue.innerHTML || txtValue.textContent;
+>>>>>>> d4897e4cbf9047016a9a1a2f506cba9f1a9f02f7
     if (texts.toLowerCase().indexOf(searchRepos) > -1) {
       list[i].style.display = "";
     } else {
