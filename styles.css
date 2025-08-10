@@ -23,8 +23,7 @@
 #username {
     height: 50px;
     max-height: 60px;
-    width: 600px;
-    max-width: 700px;
+    max-width: 400px;
 }
 
 #username:focus {
@@ -57,7 +56,7 @@
 }
 
 #error {
-    display: none;
+    visibility: hidden;
 }
 
 .list {
@@ -66,13 +65,7 @@
     top: 200px;
     white-space: nowrap;
     overflow: hidden;
-<<<<<<< HEAD
-    animation: typewriter 1.3s steps(10) 0.7s 1 normal both,
-        blinkTextCursor 60s steps(10) infinite normal;
-=======
-    animation: typewriter 1.5s steps(11) 1s 1 normal both,
-        blinkTextCursor 60s steps(11) infinite normal;
->>>>>>> d4897e4cbf9047016a9a1a2f506cba9f1a9f02f7
+    animation: typewriter 1.3s steps(10) 0.7s 1 normal both, blinkTextCursor 60s steps(10) infinite normal;
 }
 
 #topic {
@@ -100,4 +93,31 @@
 
 #loader.show {
     display: block;
+}
+
+@media (min-width: 450px) {
+    #username {
+        height: 50px;
+        max-height: 60px;
+        width: 350px;
+        max-width: 700px;
+    }
+}
+
+@media (min-width: 580px) {
+    #username {
+        height: 50px;
+        max-height: 60px;
+        width: 450px;
+        max-width: 700px;
+    }
+}
+
+@media (min-width: 760px) {
+    #username {
+        height: 50px;
+        max-height: 60px;
+        width: 600px;
+        max-width: 700px;
+    }
 }
